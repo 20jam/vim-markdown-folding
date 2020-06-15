@@ -3,9 +3,9 @@ function! StackedMarkdownFolds()
   let thisline = getline(v:lnum)
   let prevline = getline(v:lnum - 1)
   let nextline = getline(v:lnum + 1)
-  if thisline =~ '^```.*$' && prevline =~ '^\s*$'  " start of a fenced block
+  if thisline =~ '^`~`~`.*$' && prevline =~ '^\s*$'  " start of a fenced block
     return ">2"
-  elseif thisline =~ '^```$' && nextline =~ '^\s*$'  " end of a fenced block
+  elseif thisline =~ '^`~`~`$' && nextline =~ '^\s*$'  " end of a fenced block
     return "<2"
   endif
   
@@ -20,9 +20,9 @@ function! NestedMarkdownFolds()
   let thisline = getline(v:lnum)
   let prevline = getline(v:lnum - 1)
   let nextline = getline(v:lnum + 1)
-  if thisline =~ '^```.*$' && prevline =~ '^\s*$'  " start of a fenced block
+  if thisline =~ '^`~`~`.*$' && prevline =~ '^\s*$'  " start of a fenced block
     return "a1"
-  elseif thisline =~ '^```$' && nextline =~ '^\s*$'  " end of a fenced block
+  elseif thisline =~ '^`~`~`$' && nextline =~ '^\s*$'  " end of a fenced block
     return "s1"
   endif
 
@@ -87,8 +87,8 @@ endfunction
 function! s:HasSurroundingFencemarks(lnum)
   let cursorPosition = [line("."), col(".")]
   call cursor(a:lnum, 1)
-  let startFence = '\%^```\|^\n\zs```'
-  let endFence = '```\n^$'
+  let startFence = '\%^`~`~`\|^\n\zs`~`~`'
+  let endFence = '`~`~`\n^$'
   let fenceEndPosition = searchpairpos(startFence,'',endFence,'W')
   call cursor(cursorPosition)
   return fenceEndPosition != [0,0]
